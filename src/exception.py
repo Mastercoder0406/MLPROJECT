@@ -2,6 +2,7 @@
 
 import sys
 import logging
+from src.logger import logging
 #sys is used to manipulate python runtime env
 def error_message_detail(error,error_detail:sys):
     _,_,exec_tb=error_detail.exc_info() # which file and line we getting error
@@ -26,4 +27,5 @@ class CustomException(Exception):
 #     except Exception as e:
 #         logging.info("Divide by 0 error")
 #         raise CustomException(e,sys)
+    
    
