@@ -2,14 +2,21 @@
 
 
 import sys
-import os
+import os#
+
+
+#dataclass provide template
 from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
+
+#create pipeline of the task 
 from sklearn.pipeline import Pipeline
+
+#handling categorical value
 from sklearn.preprocessing import OneHotEncoder,StandardScaler
 
 from src.exception import CustomException
@@ -57,10 +64,6 @@ class DataTransformation:
                 ("scaler",StandardScaler(with_mean=False))
                         ]
             )
-
-
-
-
             
             logging.info("Numerical coloums standard scaling completed")
             logging.info("Categorical Coloums encoding completed")
@@ -84,23 +87,32 @@ class DataTransformation:
             
             logging.info("obtaining prepocessing Object")
             
+            
+            # create or intitalize data trasnfomred ornject
             preprocessing_obj=self.get_data_transformer_object()
             target_coloum_name="math_score"
             numerical_coloums=["writing_score","reading_score"]
             
+            
+            #creatinf tratin_Test splut
             input_feature_train_df=train_df.drop(columns=[target_coloum_name])
             target_feature_train_df=train_df[target_coloum_name]
             
+            #test data
             input_feature_test_df=test_df.drop(columns=[target_coloum_name])
             target_feature_test_df=test_df[target_coloum_name]
             
-            logging.info(f"Alpplying preprocessing object on traingin dataframe and testing dataframe")
+            logging.info(f"Applying preprocessing object on training dataframe and testing dataframe")
             
+            
+            #fitransform i used to handl all thedata  feature engineering process
+            #using the above  class DataTransformation  we transform the data
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)
             
-            train_arr=np.c_[input_feature_train_arr,np.array(target_feature_train_df)]
             
+            #combining the input train  and test feature respectively 
+            train_arr=np.c_[input_feature_train_arr,np.array(target_feature_train_df)]  
             test_arr=np.c_[input_feature_test_arr,np.array(target_feature_test_df)]
             
             logging.info(f"Saved preprocessing object")
